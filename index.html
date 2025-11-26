@@ -16,6 +16,19 @@
   <button id="drawBtn">抽選する</button>
   <p id="result"></p>
 
+  <script>
+    // ここで LIFF を初期化（あなたのID）
+    liff.init({
+      liffId: "2008573878-b5rNR1aj"
+    })
+    .then(() => {
+      console.log("LIFF init OK");
+    })
+    .catch(err => {
+      console.error("LIFF init error", err);
+    });
+  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
