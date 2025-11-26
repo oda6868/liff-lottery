@@ -1,39 +1,29 @@
-const LIFF_ID = 'YOUR_LIFF_ID_HERE'; // あとで本物のLIFF IDに書き換え
-
-const prizes = [
-  { name: "🎉1等：うな丼ダブル無料",        probability: 1.5 },
-  { name: "🥇2等：うな重無料",              probability: 2.5 },
-  { name: "🥈3等：Tシャツ or 湯呑み",       probability: 7 },
-  { name: "🥉4等：コースター or エコバッグ", probability: 20 },
-  { name: "🎁5等：キーホルダー",            probability: 69 },
-];
-
-// 確率に応じて景品を1つ返す
-function drawPrize() {
-  const rand = Math.random() * 100; // 0〜100未満
-  let cumulative = 0;
-  for (const prize of prizes) {
-    cumulative += prize.probability;
-    if (rand < cumulative) {
-      return prize;
-    }
+// LIFF ログインチェック
+async function liffLoginCheck() {
+  if (!liff.isLoggedIn()) {
+    liff.login(); // ログインしていなければログイン画面へ
   }
-  // 念のため
-  return prizes[prizes.length - 1];
 }
 
-async function initLiff() {
-  await liff.init({ liffId: LIFF_ID });
+// 抽選実行
+function drawLottery() {
+  const rand = Math.random() * 100;
 
-  const btn = document.getElementById('drawBtn');
-  const resultEl = document.getElementById('result');
+  if (rand < 1.5) {
+    return "🎉【1等】うな丼ダブル無料！！";
+  } else if (rand < 1.5 + 2.5) {
+    return "✨【2等】うな重無料！";
+  } else if (rand < 1.5 + 2.5 + 7) {
+    return "😆【3等】Tシャツ or 湯呑み";
+  } else if (rand < 1.5 + 2.5 + 7 + 20) {
+    return "😊【4等】コースター or エコバッグ";
+  } else {
+    return "👍【5等】キーホルダー";
+  }
+}
 
-  btn.addEventListener('click', async () => {
-    const prize = drawPrize();
-
-    // ① 画面に表示
-    resultEl.textContent = `あなたの結果：${prize.name}`;
-
-    // ② LINEメッセージも送信
-    try {
-      await liff.sendMessages([
+// 押されたときの動作
+document.getElementById("drawBtn").addEventListener("click", async () => {
+  await liffLoginCheck(); // ちゃんとログインした上で
+  document.getElementById("result").textContent = drawLottery();
+});
