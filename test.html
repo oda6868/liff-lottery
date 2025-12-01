@@ -7,8 +7,8 @@
 
   <style>
     :root {
-      --brand: #f77618;              /* 宇奈ととカラー */
-      --brand-light: #fca15b;        /* 補色オレンジ */
+      --brand: #f77618;
+      --brand-light: #fca15b;
       --card-bg: #ffffff;
       --text-main: #111827;
       --text-sub: #4b5563;
@@ -141,3 +141,31 @@
       <p class="subtitle">
         ボタンを押すと、<span class="highlight">その場で当選結果</span>がわかります！<br>
         こちらは <strong>デザイン確認用ページ</strong> です。
+      </p>
+
+      <div class="prize-box">
+        <div class="prize-title">🎁 当選ラインナップ</div>
+        <ul class="prize-items">
+          <li>1等：うな丼ダブル無料！</li>
+          <li>2等：うな丼無料！</li>
+          <li>3等：Tシャツ or 湯呑み</li>
+          <li>4等：コースター or 巾着</li>
+          <li>5等：キーホルダー</li>
+        </ul>
+      </div>
+
+      <!-- ▼ ボタン -->
+      <button id="drawBtn">抽選する</button>
+      <p class="button-caption">※このページは動作しません（デザイン確認用）</p>
+
+      <!-- ▼ 結果表示 -->
+      <p id="result"></p>
+
+      <p class="note">
+        実際の抽選では、結果がLINEトークに自動送信されます。
+      </p>
+
+    </div>
+  </div>
+</body>
+</html>
