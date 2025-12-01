@@ -4,21 +4,23 @@
 async function liffLoginCheck() {
   // LINEアプリ内で開いているかチェック
   if (!liff.isInClient()) {
-    alert("この抽選は、LINEアプリ内からご利用ください。LINE公式アカウントのトーク画面からアクセスしてください。");
+    alert(
+      "この抽選は、LINEアプリ内からご利用ください。\n名代 宇奈ととのLINE公式アカウントのトーク画面からアクセスしてください。"
+    );
     return false;
   }
 
   // 未ログインならログイン
   if (!liff.isLoggedIn()) {
     liff.login();
-    return false; // ログイン画面に飛ばすので、ここで一旦終了
+    return false; // ログインに飛ぶのでここで一旦終了
   }
 
   return true;
 }
 
 // ================================
-// 当選ロジック（表示用と送信用のセットで返す）
+// 当選ロジック（表示用＋送信用）
 // ================================
 function drawLottery() {
   const rand = Math.random() * 100;
@@ -36,7 +38,7 @@ function drawLottery() {
   } else if (rand < 1.5 + 2.5 + 7) {
     return {
       display: "😍【3等】Tシャツ or 湯呑み",
-      sendText: "3等：Tシャツ or 湯呑み に当選 ※NO.244f4e4"
+      sendText: "3等：Tシャツ or 湯呑み に当選！※NO.244f4e4"
     };
   } else if (rand < 1.5 + 2.5 + 7 + 20) {
     return {
@@ -52,7 +54,7 @@ function drawLottery() {
 }
 
 // ================================
-// ボタン押されたときの動作
+// ボタン押下時の動作
 // ================================
 document.getElementById("drawBtn").addEventListener("click", async () => {
   console.log("抽選ボタン押された");
@@ -74,9 +76,9 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
       }
     ]);
 
-    alert("抽選結果をトークに送信しました！");
+    alert("抽選結果をトークに送信しました。トーク画面をご確認ください。");
   } catch (e) {
     console.error("メッセージ送信エラー", e);
-    alert("送信エラー：" + JSON.stringify(e));
+    alert("送信エラーが発生しました。時間をおいて再度お試しください。");
   }
 });
