@@ -1,21 +1,167 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>抽選ページ</title>
+  <meta charset="UTF-8" />
+  <title>名代宇奈とと25周年！LINEガチャ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
   <style>
-    body { font-family: system-ui, sans-serif; text-align: center; padding: 40px 16px; }
-    #drawBtn { padding: 12px 24px; font-size: 18px; cursor: pointer; }
-    #result { margin-top: 24px; font-size: 22px; font-weight: bold; }
+    :root {
+      --brand: #f77618;
+      --brand-light: #fca15b;
+      --card-bg: #ffffff;
+      --text-main: #111827;
+      --text-sub: #4b5563;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--brand), var(--brand-light));
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 12px;
+      color: var(--text-main);
+      margin: 0;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 22px 20px 26px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .prize-box {
+      background: #fff4eb;
+      border: 1px solid #ffd3b3;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .prize-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #b45309;
+    }
+
+    .prize-items {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #7c2d12;
+    }
+
+    #drawBtn {
+      width: 100%;
+      max-width: 260px;
+      margin: 0 auto;
+      display: block;
+      padding: 14px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      transition: opacity 0.1s, transform 0.1s;
+      box-shadow: none;
+    }
+
+    #drawBtn:active {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--brand);
+      min-height: 1.5em;
+    }
+
+    .button-caption {
+      text-align: center;
+      font-size: 11px;
+      margin-top: 6px;
+      color: var(--text-sub);
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.5;
+      text-align: center;
+    }
   </style>
 </head>
-<body>
-  <h1>25周年！大抽選会</h1>
-  <p>ボタンを押して抽選スタート</p>
-  <button id="drawBtn">抽選する</button>
-  <p id="result"></p>
 
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <h1>名代宇奈とと25周年！LINEガチャ</h1>
+
+      <p class="subtitle">
+        「抽選する」のボタンを押すと、その場で当選結果がわかります。
+      </p>
+
+      <div class="prize-box">
+        <div class="prize-title">🎁 当選ラインナップ</div>
+        <ul class="prize-items">
+          <li>1等：うな丼ダブル無料</li>
+          <li>2等：うな丼無料</li>
+          <li>3等：Tシャツ or 湯呑み</li>
+          <li>4等：コースター or 巾着</li>
+          <li>5等：キーホルダー</li>
+        </ul>
+      </div>
+
+      <button id="drawBtn">抽選する</button>
+      <p class="button-caption">※結果はLINEトークにも自動送信されます。</p>
+
+      <p id="result"></p>
+
+      <p class="note">
+        クーポンの利用条件・有効期限は、トーク画面に配信されるクーポン詳細をご確認ください。
+      </p>
+    </div>
+  </div>
+
+  <!-- LIFF 初期化 -->
   <script>
     window.addEventListener("load", function () {
       liff.init({
@@ -26,12 +172,12 @@
       })
       .catch(err => {
         console.error("LIFF init error", err);
-        alert("LIFFの初期化に失敗しました。");
+        alert("ページの読み込みに失敗しました。時間をおいて再度お試しください。");
       });
     });
   </script>
 
-  <!-- キャッシュ対策で ?v=3 をつける -->
-  <script src="script.js?v=3"></script>
+  <!-- 抽選ロジック本体 -->
+  <script src="script.js?v=10"></script>
 </body>
 </html>
