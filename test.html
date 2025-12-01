@@ -52,35 +52,32 @@
       font-size: 13px;
       color: var(--text-sub);
       margin-bottom: 16px;
-      line-height: 1.5;
-    }
-
-    .highlight {
-      color: var(--brand);
-      font-weight: 700;
+      line-height: 1.6;
+      white-space: pre-line;
     }
 
     .prize-box {
       background: #fff4eb;
       border: 1px solid #ffd3b3;
       border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      text-align: center; /* ➤ 中央揃え */
     }
 
     .prize-title {
-      font-size: 12px;
+      font-size: 15px; /* ➤ 少し大きく */
       font-weight: 700;
       color: #b45309;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
     }
 
     .prize-items {
       list-style: none;
       padding: 0;
       margin: 0;
-      font-size: 12px;
-      line-height: 1.5;
+      font-size: 14px; /* ➤ 大きく */
+      line-height: 1.7;
       color: #7c2d12;
     }
 
@@ -99,8 +96,7 @@
       letter-spacing: 0.12em;
       cursor: pointer;
       transition: opacity 0.1s, transform 0.1s;
-      /* シャドウ削除 */
-      box-shadow: none;
+      box-shadow: none; /* シャドウなし */
     }
 
     #drawBtn:active {
@@ -138,15 +134,15 @@
   <div class="wrapper">
     <div class="card">
 
-      <!-- タイトル -->
       <h1>名代宇奈とと25周年！LINEガチャ</h1>
 
-      <!-- 説明文 -->
+      <!-- 説明文（改行あり） -->
       <p class="subtitle">
-        「抽選する」のボタンを押すと、その場で当選結果がわかります。
+「抽選する」のボタンを押すと、<br>
+その場で当選結果がわかります。
       </p>
 
-      <!-- ラインナップ -->
+      <!-- 当選ラインナップ -->
       <div class="prize-box">
         <div class="prize-title">🎁 当選ラインナップ</div>
         <ul class="prize-items">
@@ -158,11 +154,9 @@
         </ul>
       </div>
 
-      <!-- ボタン -->
       <button id="drawBtn">抽選する</button>
       <p class="button-caption">※このページは動作しません（デザイン確認用）</p>
 
-      <!-- 結果表示エリア -->
       <p id="result"></p>
 
       <p class="note">
