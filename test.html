@@ -123,4 +123,42 @@
       </p>
 
       <div class="prize-box">
-        <
+        <div class="prize-title">🎁 当選ラインナップ</div>
+        <ul class="prize-items">
+          <li>1等：うな丼ダブル無料</li>
+          <li>2等：うな丼無料</li>
+          <li>3等：Tシャツ or 湯呑み</li>
+          <li>4等：コースター or 巾着</li>
+          <li>5等：キーホルダー</li>
+        </ul>
+      </div>
+
+      <button id="drawBtn">抽選する</button>
+      <p id="result"></p>
+    </div>
+  </div>
+
+  <script>
+    function drawLottery() {
+      const rand = Math.random() * 100;
+
+      if (rand < 1.5) {
+        return "🎉【1等】うな丼ダブル無料！！";
+      } else if (rand < 1.5 + 2.5) {
+        return "✨【2等】うな丼無料！";
+      } else if (rand < 1.5 + 2.5 + 7) {
+        return "😍【3等】Tシャツ or 湯呑み";
+      } else if (rand < 1.5 + 2.5 + 7 + 20) {
+        return "😊【4等】コースター or 巾着";
+      } else {
+        return "🍀【5等】キーホルダー";
+      }
+    }
+
+    document.getElementById("drawBtn").addEventListener("click", () => {
+      const result = drawLottery();
+      document.getElementById("result").textContent = result;
+    });
+  </script>
+</body>
+</html>
