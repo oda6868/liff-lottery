@@ -1,4 +1,23 @@
 // ================================
+// LIFF ログインチェック
+// ================================
+async function liffLoginCheck() {
+  // LINEアプリ内で開いているかチェック
+  if (!liff.isInClient()) {
+    alert("この抽選は、LINEアプリ内からご利用ください。");
+    return false;
+  }
+
+  // 未ログインならログイン
+  if (!liff.isLoggedIn()) {
+    liff.login();
+    return false; // ログイン画面に飛ばすので、ここで一旦終了
+  }
+
+  return true;
+}
+
+// ================================
 // 当選ロジック（表示用と送信用のセットで返す）
 // ================================
 function drawLottery() {
@@ -36,7 +55,10 @@ function drawLottery() {
 // ボタン押されたときの動作
 // ================================
 document.getElementById("drawBtn").addEventListener("click", async () => {
+  console.log("抽選ボタン押された");
+
   const ok = await liffLoginCheck();
+  console.log("liffLoginCheck:", ok);
   if (!ok) return;
 
   const result = drawLottery();
