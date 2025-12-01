@@ -17,15 +17,17 @@
   <p id="result"></p>
 
   <script>
-    // ここで LIFF を初期化（あなたのID）
-    liff.init({
-      liffId: "2008573878-b5rNR1aj"
-    })
-    .then(() => {
-      console.log("LIFF init OK");
-    })
-    .catch(err => {
-      console.error("LIFF init error", err);
+    window.addEventListener("load", function () {
+      liff.init({
+        liffId: "2008573878-b5rNR1aj"   // ← ← 正しい LIFF ID を厳密にここへ
+      })
+      .then(() => {
+        console.log("LIFF init OK");
+      })
+      .catch(err => {
+        console.error("LIFF init error", err);
+        alert("LIFFの初期化に失敗しました。");
+      });
     });
   </script>
 
