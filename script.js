@@ -4,7 +4,7 @@
 async function liffLoginCheck() {
   // LINEアプリ内で開いているかチェック
   if (!liff.isInClient()) {
-    alert("この抽選は、LINEアプリ内からご利用ください。");
+    alert("この抽選は、LINEアプリ内からご利用ください。LINE公式アカウントのトーク画面からアクセスしてください。");
     return false;
   }
 
