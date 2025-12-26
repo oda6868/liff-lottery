@@ -79,6 +79,8 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
     alert("抽選結果をトークに送信しました。トーク画面をご確認ください。");
   } catch (e) {
     console.error("メッセージ送信エラー", e);
-    alert("送信エラーが発生しました。時間をおいて再度お試しください。");
+    alert("このページはLINEアプリ内ブラウザ専用です。\n\n" +
+    "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
+    "恐れ入りますが、名代 宇奈ととのLINE公式アカウントのリッチメニューから、もう一度リンクを開いてください。");
   }
 });
