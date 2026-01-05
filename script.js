@@ -32,8 +32,8 @@ function drawLottery() {
     };
   } else if (rand < 1.5 + 2.5) {
     return {
-      display: "✨【2等】うな丼無料！",
-      sendText: "2等：うな丼無料 に当選！※No.20t74te935"
+      display: "✨【2等】うな重無料！",
+      sendText: "2等：うな重無料 に当選！※No.20t74te935"
     };
   } else if (rand < 1.5 + 2.5 + 7) {
     return {
