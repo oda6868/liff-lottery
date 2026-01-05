@@ -63,6 +63,13 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
   console.log("liffLoginCheck:", ok);
   if (!ok) return;
 
+  // ★ ここから追加：すでに抽選済みかチェック
+  if (await hasDrawn()) {
+    document.getElementById("result").textContent = "この抽選は1人1回までです。";
+    return;
+  }
+  // ★ 追加ここまで
+
   const result = drawLottery();
 
   // 画面表示
@@ -76,11 +83,34 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
       }
     ]);
 
+    // ★ ここで抽選済みとして保存
+    await markDrawn();
+
     alert("抽選結果をトークに送信しました。トーク画面をご確認ください。");
   } catch (e) {
     console.error("メッセージ送信エラー", e);
-    alert("このページはLINEアプリ内ブラウザ専用です。\n\n" +
-    "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
-    "恐れ入りますが、名代 宇奈ととのLINE公式アカウントのリッチメニューから、もう一度リンクを開いてください。");
+    alert(
+      "このページはLINEアプリ内ブラウザ専用です。\n\n" +
+      "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
+      "恐れ入りますが、名代 宇奈ととのLINE公式アカウントのリッチメニューから、もう一度リンクを開いてください。"
+    );
   }
 });
+
+// ================================
+// 1人1回制限用（同一端末・同一LINEブラウザ）
+// ================================
+async function getUserKey() {
+  const profile = await liff.getProfile();
+  return `unatoto_lottery_2026_${profile.userId}`;
+}
+
+async function hasDrawn() {
+  const key = await getUserKey();
+  return localStorage.getItem(key) === "1";
+}
+
+async function markDrawn() {
+  const key = await getUserKey();
+  localStorage.setItem(key, "1");
+}
