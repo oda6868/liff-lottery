@@ -43,7 +43,7 @@ function drawLottery() {
   } else if (rand < 1.5 + 2.5 + 7 + 20) {
     return {
       display: "😊【4等】コースター or エコバック",
-      sendText: "4等：コースター or エコバック に当選！※No.432g84t"
+      sendText: "4等：コースターorエコバックに当選！※No.432g84t"
     };
   } else {
     return {
