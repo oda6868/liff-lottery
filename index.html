@@ -28,7 +28,10 @@
       margin: 0;
     }
 
-    .wrapper { width: 100%; max-width: 460px; }
+    .wrapper {
+      width: 100%;
+      max-width: 460px;
+    }
 
     .card {
       background: var(--card-bg);
@@ -42,7 +45,7 @@
       text-align: center;
       font-size: 22px;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin: 0 0 8px;
     }
 
     .subtitle {
@@ -78,6 +81,55 @@
       color: #7c2d12;
     }
 
+    .condition-title {
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      margin: 18px 0 10px;
+    }
+
+    .condition-note {
+      text-align: center;
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .condition-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .condition-btn {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      background: #fff;
+      color: var(--brand);
+      border: 2px solid var(--brand);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .condition-btn:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+
+    #drawArea {
+      display: none;
+      text-align: center;
+    }
+
+    .draw-count {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #374151;
+    }
+
     #drawBtn {
       width: 100%;
       max-width: 260px;
@@ -95,7 +147,10 @@
       transition: opacity 0.1s, transform 0.1s;
     }
 
-    #drawBtn:active { transform: scale(0.98); opacity: 0.9; }
+    #drawBtn:active {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
 
     #result {
       text-align: center;
@@ -115,8 +170,17 @@
       min-height: 1.4em;
     }
 
+    #remaining {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #b45309;
+      margin-top: 10px;
+      min-height: 1.4em;
+    }
+
     .note {
-      margin-top: 12px;
+      margin-top: 16px;
       font-size: 11px;
       color: #6b7280;
       line-height: 1.5;
@@ -128,11 +192,12 @@
 <body>
   <div class="wrapper">
     <div class="card">
+
       <h1>とと子 ありがとうガチャ</h1>
 
       <p class="subtitle">
         とと子への投票、または宇奈ととのSNSフォローありがとうございます！<br>
-        「抽選する」ボタンを押すと、その場で結果がわかります。<br>
+        参加条件を確認のうえ、スタッフの案内に従ってお進みください。<br>
         <strong>結果画面をそのままスタッフにお見せください🎁</strong>
       </p>
 
@@ -146,14 +211,53 @@
         </ul>
       </div>
 
-      <button id="drawBtn">抽選する</button>
+      <!-- 参加条件選択 -->
+      <div id="conditionArea">
+        <div class="condition-title">
+          参加した条件を選択してください
+        </div>
 
-      <p id="result"></p>
-      <p id="timestamp"></p>
+        <div class="condition-note">
+          ※スタッフ確認後に選択してください
+        </div>
+
+        <div class="condition-buttons">
+          <button class="condition-btn" data-draws="1">
+            SNSフォロー<br>
+            <small>1回抽選</small>
+          </button>
+
+          <button class="condition-btn" data-draws="2">
+            とと子への投票<br>
+            <small>2回抽選</small>
+          </button>
+
+          <button class="condition-btn" data-draws="3">
+            SNSフォロー ＋ とと子への投票<br>
+            <small>3回抽選</small>
+          </button>
+        </div>
+      </div>
+
+      <!-- 抽選エリア -->
+      <div id="drawArea">
+
+        <div id="drawCount" class="draw-count"></div>
+
+        <button id="drawBtn">抽選する</button>
+
+        <p id="result"></p>
+        <p id="timestamp"></p>
+        <p id="remaining"></p>
+
+      </div>
 
       <p class="note">
-        お一人さま1回まで。景品はその場でのお渡しです（なくなり次第終了）。
+        SNSフォロー：1回、投票参加：2回、両方参加：3回。<br>
+        ※1日につき1回の参加が可能です。土日両日ご参加の場合は、それぞれの日に抽選できます。<br>
+        景品はその場でのお渡しです（なくなり次第終了）。
       </p>
+
     </div>
   </div>
 
@@ -168,14 +272,18 @@
       })
       .catch(err => {
         console.error("LIFF init error", err);
-        alert("このページはLINEアプリ内ブラウザ専用です。\n\n" +
-    "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
-    "恐れ入りますが、ブースのQRコードをLINEで読み取るか、名代 宇奈ととのLINE公式アカウントから開いてください。");
+        alert(
+          "このページはLINEアプリ内ブラウザ専用です。\n\n" +
+          "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
+          "恐れ入りますが、ブースのQRコードをLINEで読み取るか、" +
+          "名代 宇奈ととのLINE公式アカウントから開いてください。"
+        );
       });
     });
   </script>
 
   <!-- 抽選ロジック本体 -->
-  <script src="script.js?v=21"></script>
+  <script src="script.js?v=22"></script>
+
 </body>
 </html>
