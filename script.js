@@ -1,55 +1,37 @@
 // ================================
-// LIFF ログインチェック
+// とと子 ありがとうガチャ 2026（会場その場お渡し版）
+// 景品割合：Tシャツ10% / コースター2枚セット10% / キーホルダー20% / エコバッグ60%
 // ================================
+
+// LIFF ログインチェック
 async function liffLoginCheck() {
-  // LINEアプリ内で開いているかチェック
   if (!liff.isInClient()) {
     alert(
-      "この抽選は、LINEアプリ内からご利用ください。\n名代 宇奈ととのLINE公式アカウントのトーク画面からアクセスしてください。"
+      "この抽選は、LINEアプリ内からご利用ください。\nブースのQRコードを読み取るか、名代 宇奈ととのLINE公式アカウントのトーク画面からアクセスしてください。"
     );
     return false;
   }
-
-  // 未ログインならログイン
   if (!liff.isLoggedIn()) {
     liff.login();
-    return false; // ログインに飛ぶのでここで一旦終了
+    return false;
   }
-
   return true;
 }
 
 // ================================
-// 当選ロジック（表示用＋送信用）
+// 当選ロジック（2026年版・ハズレなし）
 // ================================
 function drawLottery() {
   const rand = Math.random() * 100;
 
-  if (rand < 1.5) {
-    return {
-      display: "🎉【1等】うな丼ダブル無料！！",
-      sendText: "1等：うな丼ダブル無料 に当選！※NO.234e35t35r"
-    };
-  } else if (rand < 1.5 + 2.5) {
-    return {
-      display: "✨【2等】うな重無料！",
-      sendText: "2等：うな重無料 に当選！※No.20t74te935"
-    };
-  } else if (rand < 1.5 + 2.5 + 7) {
-    return {
-      display: "😍【3等】Tシャツ or 湯呑み",
-      sendText: "3等：Tシャツ or 湯呑み に当選！※NO.244f4e4"
-    };
-  } else if (rand < 1.5 + 2.5 + 7 + 20) {
-    return {
-      display: "😊【4等】コースター or エコバック",
-      sendText: "4等：コースターorエコバックに当選！※No.432g84t"
-    };
+  if (rand < 10) {
+    return { grade: "1等", display: "🎉【1等】とと子Tシャツ！！" };
+  } else if (rand < 10 + 10) {
+    return { grade: "2等", display: "✨【2等】とと子コースター 2枚セット！" };
+  } else if (rand < 10 + 10 + 20) {
+    return { grade: "3等", display: "😍【3等】とと子キーホルダー（好きな柄を選べます）" };
   } else {
-    return {
-      display: "🍀【5等】キーホルダー",
-      sendText: "5等：キーホルダー に当選！※No.20f457g5"
-    };
+    return { grade: "4等", display: "🍀【4等】とと子エコバッグ" };
   }
 }
 
@@ -57,60 +39,61 @@ function drawLottery() {
 // ボタン押下時の動作
 // ================================
 document.getElementById("drawBtn").addEventListener("click", async () => {
-  console.log("抽選ボタン押された");
-
   const ok = await liffLoginCheck();
-  console.log("liffLoginCheck:", ok);
   if (!ok) return;
 
-  // ★ ここから追加：すでに抽選済みかチェック
+  // すでに抽選済みかチェック
   if (await hasDrawn()) {
-    document.getElementById("result").textContent = "この抽選は1人1回までです。";
+    document.getElementById("result").textContent = "この抽選はお一人さま1回までです。";
+    document.getElementById("timestamp").textContent = "";
     return;
   }
-  // ★ 追加ここまで
 
   const result = drawLottery();
+
+  // ★ 抽選した瞬間に記録（送信などを待たない）
+  await markDrawn();
 
   // 画面表示
   document.getElementById("result").textContent = result.display;
 
-  try {
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: result.sendText
-      }
-    ]);
+  // 時刻表示（スクショ使い回し対策：スタッフは時刻が直近かを確認）
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, "0");
+  const mm = String(now.getMinutes()).padStart(2, "0");
+  const ss = String(now.getSeconds()).padStart(2, "0");
+  document.getElementById("timestamp").textContent =
+    "抽選時刻 " + hh + ":" + mm + ":" + ss + "　この画面をスタッフにお見せください";
 
-    // ★ ここで抽選済みとして保存
-    await markDrawn();
-
-    alert("抽選結果をトークに送信しました。トーク画面をご確認ください。");
-  } catch (e) {
-    console.error("メッセージ送信エラー", e);
-    alert(
-      "このページはLINEアプリ内ブラウザ専用です。\n\n" +
-      "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
-      "恐れ入りますが、名代 宇奈ととのLINE公式アカウントのリッチメニューから、もう一度リンクを開いてください。"
-    );
-  }
+  // ボタンを無効化
+  const btn = document.getElementById("drawBtn");
+  btn.disabled = true;
+  btn.textContent = "抽選ずみ";
+  btn.style.opacity = "0.5";
 });
 
 // ================================
-// 1人1回制限用（同一端末・同一LINEブラウザ）
+// 1人1回制限用（LINEユーザーID×端末）
 // ================================
 async function getUserKey() {
   const profile = await liff.getProfile();
-  return `unatoto_lottery_2026_${profile.userId}`;
+  return `totoko_gacha_2026_${profile.userId}`;
 }
 
 async function hasDrawn() {
-  const key = await getUserKey();
-  return localStorage.getItem(key) === "1";
+  try {
+    const key = await getUserKey();
+    return localStorage.getItem(key) === "1";
+  } catch (e) {
+    return false;
+  }
 }
 
 async function markDrawn() {
-  const key = await getUserKey();
-  localStorage.setItem(key, "1");
+  try {
+    const key = await getUserKey();
+    localStorage.setItem(key, "1");
+  } catch (e) {
+    console.error("markDrawn error", e);
+  }
 }
