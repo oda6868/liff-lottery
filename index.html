@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>名代宇奈とと25周年！LINEガチャ</title>
+  <title>とと子 ありがとうガチャ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
@@ -28,10 +28,7 @@
       margin: 0;
     }
 
-    .wrapper {
-      width: 100%;
-      max-width: 460px;
-    }
+    .wrapper { width: 100%; max-width: 460px; }
 
     .card {
       background: var(--card-bg);
@@ -96,13 +93,9 @@
       cursor: pointer;
       letter-spacing: 0.1em;
       transition: opacity 0.1s, transform 0.1s;
-      box-shadow: none;
     }
 
-    #drawBtn:active {
-      transform: scale(0.98);
-      opacity: 0.9;
-    }
+    #drawBtn:active { transform: scale(0.98); opacity: 0.9; }
 
     #result {
       text-align: center;
@@ -113,11 +106,13 @@
       min-height: 1.5em;
     }
 
-    .button-caption {
+    #timestamp {
       text-align: center;
-      font-size: 11px;
-      margin-top: 6px;
-      color: var(--text-sub);
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 8px;
+      color: #111827;
+      min-height: 1.4em;
     }
 
     .note {
@@ -133,31 +128,31 @@
 <body>
   <div class="wrapper">
     <div class="card">
-      <h1>名代宇奈とと25周年！LINEガチャ</h1>
+      <h1>とと子 ありがとうガチャ</h1>
 
       <p class="subtitle">
-        「抽選する」のボタンを押すと、その場で当選結果がわかります。<br>
-        ⚠️すぐに抽選ページを閉じると、クーポンが送信されないケースがございます。抽選結果表示後、10秒ほど待った後に画面を閉じてクーポンをご確認下さい。⚠️
+        とと子への投票、または宇奈ととのSNSフォローありがとうございます！<br>
+        「抽選する」ボタンを押すと、その場で結果がわかります。<br>
+        <strong>結果画面をそのままスタッフにお見せください🎁</strong>
       </p>
 
       <div class="prize-box">
-        <div class="prize-title">🎁 当選ラインナップ</div>
+        <div class="prize-title">🎁 当選ラインナップ（ハズレなし！）</div>
         <ul class="prize-items">
-          <li>1等：うな丼ダブル無料</li>
-          <li>2等：うな重無料</li>
-          <li>3等：Tシャツ or 湯呑み</li>
-          <li>4等：コースター or エコバック</li>
-          <li>5等：キーホルダー</li>
+          <li>1等：とと子Tシャツ</li>
+          <li>2等：とと子コースター 2枚セット</li>
+          <li>3等：とと子キーホルダー（柄が選べる）</li>
+          <li>4等：とと子エコバッグ</li>
         </ul>
       </div>
 
       <button id="drawBtn">抽選する</button>
-      <p class="button-caption">※結果はLINEトークにも自動送信されます。</p>
 
       <p id="result"></p>
+      <p id="timestamp"></p>
 
       <p class="note">
-        クーポンの利用条件・有効期限は、トーク画面に配信されるクーポン詳細をご確認ください。
+        お一人さま1回まで。景品はその場でのお渡しです（なくなり次第終了）。
       </p>
     </div>
   </div>
@@ -175,12 +170,12 @@
         console.error("LIFF init error", err);
         alert("このページはLINEアプリ内ブラウザ専用です。\n\n" +
     "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
-    "恐れ入りますが、名代 宇奈ととのLINE公式アカウントのリッチメニューから、もう一度リンクを開いてください。");
+    "恐れ入りますが、ブースのQRコードをLINEで読み取るか、名代 宇奈ととのLINE公式アカウントから開いてください。");
       });
     });
   </script>
 
   <!-- 抽選ロジック本体 -->
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=21"></script>
 </body>
 </html>
