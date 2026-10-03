@@ -1,9 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <title>とと子 ありがとうガチャ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -96,15 +98,15 @@
     }
 
     .condition-buttons {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
 
     .condition-btn {
       width: 100%;
       padding: 13px 16px;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       background: #fff;
       color: var(--brand);
@@ -211,10 +213,10 @@
         </ul>
       </div>
 
-      <!-- 参加条件選択 -->
+      <!-- 抽選回数選択 -->
       <div id="conditionArea">
         <div class="condition-title">
-          参加した条件を選択してください
+          抽選回数を選択してください
         </div>
 
         <div class="condition-note">
@@ -222,26 +224,21 @@
         </div>
 
         <div class="condition-buttons">
-          <button class="condition-btn" data-draws="1">
-            SNSフォロー<br>
-            <small>1回抽選</small>
-          </button>
-
-          <button class="condition-btn" data-draws="2">
-            とと子への投票<br>
-            <small>2回抽選</small>
-          </button>
-
-          <button class="condition-btn" data-draws="3">
-            SNSフォロー ＋ とと子への投票<br>
-            <small>3回抽選</small>
-          </button>
+          <button class="condition-btn" data-draws="1">1回</button>
+          <button class="condition-btn" data-draws="2">2回</button>
+          <button class="condition-btn" data-draws="3">3回</button>
+          <button class="condition-btn" data-draws="4">4回</button>
+          <button class="condition-btn" data-draws="5">5回</button>
+          <button class="condition-btn" data-draws="6">6回</button>
+          <button class="condition-btn" data-draws="7">7回</button>
+          <button class="condition-btn" data-draws="8">8回</button>
+          <button class="condition-btn" data-draws="9">9回</button>
+          <button class="condition-btn" data-draws="10">10回</button>
         </div>
       </div>
 
       <!-- 抽選エリア -->
       <div id="drawArea">
-
         <div id="drawCount" class="draw-count"></div>
 
         <button id="drawBtn">抽選する</button>
@@ -249,11 +246,10 @@
         <p id="result"></p>
         <p id="timestamp"></p>
         <p id="remaining"></p>
-
       </div>
 
       <p class="note">
-        SNSフォロー：1回、投票参加：2回、両方参加：3回。<br>
+        抽選回数はスタッフの案内に従って選択してください。<br>
         ※1日につき1回の参加が可能です。土日両日ご参加の場合は、それぞれの日に抽選できます。<br>
         景品はその場でのお渡しです（なくなり次第終了）。
       </p>
@@ -287,3 +283,4 @@
 
 </body>
 </html>
+```
