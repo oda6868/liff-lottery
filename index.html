@@ -113,6 +113,9 @@
       border: 2px solid var(--brand);
       border-radius: 12px;
       cursor: pointer;
+      -webkit-appearance: none;
+      appearance: none;
+      touch-action: manipulation;
     }
 
     .condition-btn:active {
@@ -147,6 +150,7 @@
       cursor: pointer;
       letter-spacing: 0.1em;
       transition: opacity 0.1s, transform 0.1s;
+      touch-action: manipulation;
     }
 
     #drawBtn:active {
@@ -224,16 +228,16 @@
         </div>
 
         <div class="condition-buttons">
-          <button class="condition-btn" data-draws="1">1回</button>
-          <button class="condition-btn" data-draws="2">2回</button>
-          <button class="condition-btn" data-draws="3">3回</button>
-          <button class="condition-btn" data-draws="4">4回</button>
-          <button class="condition-btn" data-draws="5">5回</button>
-          <button class="condition-btn" data-draws="6">6回</button>
-          <button class="condition-btn" data-draws="7">7回</button>
-          <button class="condition-btn" data-draws="8">8回</button>
-          <button class="condition-btn" data-draws="9">9回</button>
-          <button class="condition-btn" data-draws="10">10回</button>
+          <button type="button" class="condition-btn" data-draws="1">1回</button>
+          <button type="button" class="condition-btn" data-draws="2">2回</button>
+          <button type="button" class="condition-btn" data-draws="3">3回</button>
+          <button type="button" class="condition-btn" data-draws="4">4回</button>
+          <button type="button" class="condition-btn" data-draws="5">5回</button>
+          <button type="button" class="condition-btn" data-draws="6">6回</button>
+          <button type="button" class="condition-btn" data-draws="7">7回</button>
+          <button type="button" class="condition-btn" data-draws="8">8回</button>
+          <button type="button" class="condition-btn" data-draws="9">9回</button>
+          <button type="button" class="condition-btn" data-draws="10">10回</button>
         </div>
       </div>
 
@@ -241,7 +245,7 @@
       <div id="drawArea">
         <div id="drawCount" class="draw-count"></div>
 
-        <button id="drawBtn">抽選する</button>
+        <button type="button" id="drawBtn">抽選する</button>
 
         <p id="result"></p>
         <p id="timestamp"></p>
@@ -257,29 +261,35 @@
     </div>
   </div>
 
-  <!-- LIFF 初期化 -->
+  <!-- LIFF初期化後に抽選ロジックを読み込む -->
   <script>
-    window.addEventListener("load", function () {
-      liff.init({
-        liffId: "2008573878-b5rNR1aj"
-      })
-      .then(() => {
-        console.log("LIFF init OK");
-      })
-      .catch(err => {
-        console.error("LIFF init error", err);
-        alert(
-          "このページはLINEアプリ内ブラウザ専用です。\n\n" +
-          "SafariやChromeなどの外部ブラウザではご利用いただけません。\n\n" +
-          "恐れ入りますが、ブースのQRコードをLINEで読み取るか、" +
-          "名代 宇奈ととのLINE公式アカウントから開いてください。"
-        );
-      });
-    });
-  </script>
+    (async function () {
+      try {
+        await liff.init({
+          liffId: "2008573878-b5rNR1aj"
+        });
 
-  <!-- 抽選ロジック本体 -->
-  <script src="script.js?v=22"></script>
+        console.log("LIFF init OK");
+
+        const script = document.createElement("script");
+        script.src = "script.js?v=23";
+        script.onerror = function () {
+          console.error("script.jsの読み込みに失敗しました");
+          alert("抽選機能の読み込みに失敗しました。ページを開き直してください。");
+        };
+
+        document.body.appendChild(script);
+
+      } catch (err) {
+        console.error("LIFF init error", err);
+
+        alert(
+          "ページの読み込みに失敗しました。\n\n" +
+          "LINEアプリ内から開き直してください。"
+        );
+      }
+    })();
+  </script>
 
 </body>
 </html>
