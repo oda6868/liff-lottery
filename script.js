@@ -1,16 +1,17 @@
-```javascript
 // ================================
 // とと子 ありがとうガチャ 2026
 // 会場その場お渡し版
 //
 // 景品割合：
 // Tシャツ10%
-// コースター2枚セット15%
-// キーホルダー5%
-// エコバッグ70%
+// コースター2枚セット10%
+// キーホルダー20%
+// エコバッグ60%
 //
 // 抽選回数：
-// 1～10回まで選択可能
+// SNSフォロー → 1回
+// 投票 → 2回
+// SNSフォロー＋投票 → 3回
 //
 // 抽選回数は「1日単位」で管理。
 // 土日両日参加の場合、それぞれの日に抽選可能。
@@ -55,12 +56,12 @@ function drawLottery() {
       grade: "1等",
       display: "🎉【1等】とと子Tシャツ！！"
     };
-  } else if (rand < 25) {
+  } else if (rand < 20) {
     return {
       grade: "2等",
       display: "✨【2等】とと子コースター 2枚セット！"
     };
-  } else if (rand < 30) {
+  } else if (rand < 40) {
     return {
       grade: "3等",
       display: "😍【3等】とと子キーホルダー（好きな柄を選べます）"
@@ -81,6 +82,7 @@ function drawLottery() {
 async function getUserKey() {
   const profile = await liff.getProfile();
 
+  // 今日の日付を取得
   const now = new Date();
 
   const year = now.getFullYear();
@@ -158,6 +160,7 @@ document.querySelectorAll(".condition-btn").forEach(button => {
 
     const draws = Number(button.dataset.draws);
 
+    // 今日すでに抽選した回数を確認
     const data = await getDrawData();
 
     if (data.drawCount > 0) {
@@ -172,12 +175,16 @@ document.querySelectorAll(".condition-btn").forEach(button => {
       return;
     }
 
+    // 今回の抽選回数を設定
     maxDraws = draws;
     drawCount = 0;
 
     await saveDrawData();
 
+    // 条件選択を非表示
     document.getElementById("conditionArea").style.display = "none";
+
+    // 抽選エリアを表示
     document.getElementById("drawArea").style.display = "block";
 
     updateDrawArea();
@@ -198,6 +205,7 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
 
   if (!ok) return;
 
+  // 抽選回数終了チェック
   if (drawCount >= maxDraws) {
     finishLottery();
     return;
@@ -212,22 +220,29 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
   btn.textContent = "抽選中…";
 
 
+  // ================================
   // 抽選
+  // ================================
 
   const result = drawLottery();
 
   drawCount++;
 
+  // 抽選した瞬間に保存
   await saveDrawData();
 
 
+  // ================================
   // 結果表示
+  // ================================
 
   document.getElementById("result").textContent =
     result.display;
 
 
+  // ================================
   // 抽選時刻
+  // ================================
 
   const now = new Date();
 
@@ -243,7 +258,9 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
     "　この画面をスタッフにお見せください";
 
 
+  // ================================
   // 残り回数
+  // ================================
 
   updateDrawArea();
 
@@ -267,7 +284,9 @@ function updateDrawArea() {
       ? `残り ${remaining}回`
       : "本日の抽選は終了しました";
 
+
   const btn = document.getElementById("drawBtn");
+
 
   if (remaining > 0) {
 
@@ -305,4 +324,3 @@ function finishLottery() {
   btn.textContent = "抽選終了";
   btn.style.opacity = "0.5";
 }
-```
