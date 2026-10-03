@@ -1,4 +1,3 @@
-```javascript
 // ================================
 // とと子 ありがとうガチャ 2026
 // 会場その場お渡し版
@@ -323,4 +322,3 @@ function finishLottery() {
   btn.textContent = "抽選終了";
   btn.style.opacity = "0.5";
 }
-```
