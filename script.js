@@ -87,7 +87,7 @@ async function liffLoginCheck() {
   }
 }
 
-// 抽選結果
+// 
 function drawLottery() {
   const rand = Math.random() * 100;
 
@@ -96,15 +96,10 @@ function drawLottery() {
       grade: "1等",
       display: "🎉【1等】とと子Tシャツ！！"
     };
-  } else if (rand < 80) {
+  } else if (rand < 90) {
     return {
       grade: "2等",
       display: "✨【2等】とと子コースター 2枚セット！"
-    };
-  } else if (rand < 90) {
-    return {
-      grade: "3等",
-      display: "🍀【3等】とと子エコバッグ"
     };
   } else {
     return {
