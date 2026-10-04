@@ -87,13 +87,13 @@ function drawLottery() {
   } else if (rand < 90) {
     return {
       grade: "3等",
-      display: "🍀【3等】とと子エコバッグ"
+      display: "🍀【4等】とと子エコバッグ"
     };
 
   } else {
     return {
       grade: "4等",
-      display: "😍【4等】とと子キーホルダー（好きな柄を選べます）"
+      display: "😍【3等】とと子キーホルダー（好きな柄を選べます）"
     };
   }
 }
