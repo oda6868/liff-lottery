@@ -3,16 +3,17 @@
 // 会場その場お渡し版
 //
 // 景品割合：
-// Tシャツ10%
-// コースター2枚セット15%
-// キーホルダー5%
-// エコバッグ70%
+// Tシャツ20%
+// コースター2枚セット60%
+// エコバッグ10%
+// キーホルダー10%
 //
 // 抽選回数：
 // 1～10回まで選択可能
 //
 // 抽選回数は「1日単位」で管理。
 // 土日両日参加の場合、それぞれの日に抽選可能。
+// LINE公式アカウントの友だち追加を確認。
 // ================================
 
 let maxDraws = 0;
@@ -21,14 +22,14 @@ let isDrawing = false;
 
 
 // ================================
-// LIFF ログインチェック
+// LIFFログイン・友だち追加チェック
 // ================================
 
 async function liffLoginCheck() {
   if (!liff.isInClient()) {
     alert(
       "この抽選は、LINEアプリ内からご利用ください。\n" +
-      "ブースのQRコードを読み取るか、名代 宇奈ととのLINE公式アカウントのトーク画面からアクセスしてください。"
+      "名代 宇奈ととのLINE公式アカウントのトーク画面からアクセスしてください。"
     );
     return false;
   }
@@ -38,7 +39,29 @@ async function liffLoginCheck() {
     return false;
   }
 
-  return true;
+  try {
+    const friendship = await liff.getFriendship();
+
+    if (!friendship.friendFlag) {
+      alert(
+        "抽選に参加するには、名代 宇奈ととのLINE公式アカウントを友だち追加してください。\n\n" +
+        "友だち追加後、ページを開き直してください。"
+      );
+      return false;
+    }
+
+    return true;
+
+  } catch (error) {
+    console.error("友だち状態の確認エラー:", error);
+
+    alert(
+      "友だち追加の確認ができませんでした。\n" +
+      "ページを開き直してください。"
+    );
+
+    return false;
+  }
 }
 
 
@@ -49,25 +72,28 @@ async function liffLoginCheck() {
 function drawLottery() {
   const rand = Math.random() * 100;
 
-  if (rand < 10) {
+  if (rand < 20) {
     return {
       grade: "1等",
       display: "🎉【1等】とと子Tシャツ！！"
     };
-  } else if (rand < 25) {
+
+  } else if (rand < 80) {
     return {
       grade: "2等",
       display: "✨【2等】とと子コースター 2枚セット！"
     };
-  } else if (rand < 30) {
+
+  } else if (rand < 90) {
     return {
       grade: "3等",
-      display: "😍【3等】とと子キーホルダー（好きな柄を選べます）"
+      display: "🍀【3等】とと子エコバッグ"
     };
+
   } else {
     return {
       grade: "4等",
-      display: "🍀【4等】とと子エコバッグ"
+      display: "😍【4等】とと子キーホルダー（好きな柄を選べます）"
     };
   }
 }
@@ -80,7 +106,6 @@ function drawLottery() {
 async function getUserKey() {
   const profile = await liff.getProfile();
 
-  // 今日の日付を取得
   const now = new Date();
 
   const year = now.getFullYear();
@@ -140,6 +165,7 @@ async function saveDrawData() {
 
   } catch (e) {
     console.error("saveDrawData error", e);
+    alert("抽選情報を保存できませんでした。");
   }
 }
 
@@ -158,15 +184,20 @@ document.querySelectorAll(".condition-btn").forEach(button => {
 
     const draws = Number(button.dataset.draws);
 
-    // 今日すでに抽選した回数を確認
+    if (draws < 1 || draws > 10) {
+      alert("抽選回数の設定に誤りがあります。");
+      return;
+    }
+
     const data = await getDrawData();
 
+    // 今日すでに抽選を開始している場合
     if (data.drawCount > 0) {
-      document.getElementById("conditionArea").style.display = "none";
-      document.getElementById("drawArea").style.display = "block";
-
       maxDraws = data.maxDraws;
       drawCount = data.drawCount;
+
+      document.getElementById("conditionArea").style.display = "none";
+      document.getElementById("drawArea").style.display = "block";
 
       updateDrawArea();
 
@@ -203,7 +234,6 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
 
   if (!ok) return;
 
-  // 抽選回数終了チェック
   if (drawCount >= maxDraws) {
     finishLottery();
     return;
@@ -217,52 +247,44 @@ document.getElementById("drawBtn").addEventListener("click", async () => {
   btn.style.opacity = "0.5";
   btn.textContent = "抽選中…";
 
+  try {
 
-  // ================================
-  // 抽選
-  // ================================
+    // 抽選
+    const result = drawLottery();
 
-  const result = drawLottery();
+    drawCount++;
 
-  drawCount++;
+    // 抽選した瞬間に保存
+    await saveDrawData();
 
-  // 抽選した瞬間に保存
-  await saveDrawData();
+    // 結果表示
+    document.getElementById("result").textContent =
+      result.display;
 
+    // 抽選時刻
+    const now = new Date();
 
-  // ================================
-  // 結果表示
-  // ================================
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
+    const ss = String(now.getSeconds()).padStart(2, "0");
 
-  document.getElementById("result").textContent =
-    result.display;
+    document.getElementById("timestamp").textContent =
+      "抽選時刻 " +
+      hh + ":" +
+      mm + ":" +
+      ss +
+      "　この画面をスタッフにお見せください";
 
+    // 残り回数
+    updateDrawArea();
 
-  // ================================
-  // 抽選時刻
-  // ================================
+  } catch (error) {
+    console.error("抽選エラー:", error);
+    alert("抽選中にエラーが発生しました。ページを開き直してください。");
 
-  const now = new Date();
-
-  const hh = String(now.getHours()).padStart(2, "0");
-  const mm = String(now.getMinutes()).padStart(2, "0");
-  const ss = String(now.getSeconds()).padStart(2, "0");
-
-  document.getElementById("timestamp").textContent =
-    "抽選時刻 " +
-    hh + ":" +
-    mm + ":" +
-    ss +
-    "　この画面をスタッフにお見せください";
-
-
-  // ================================
-  // 残り回数
-  // ================================
-
-  updateDrawArea();
-
-  isDrawing = false;
+  } finally {
+    isDrawing = false;
+  }
 });
 
 
@@ -282,9 +304,7 @@ function updateDrawArea() {
       ? `残り ${remaining}回`
       : "本日の抽選は終了しました";
 
-
   const btn = document.getElementById("drawBtn");
-
 
   if (remaining > 0) {
 
